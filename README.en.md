@@ -1,7 +1,7 @@
 ---
 _file:
   created: "2026-10-29 15:08"
-  updated: "2026-10-29 15:47"
+  updated: "2026-10-29 16:29"
   status: final
 ---
 
@@ -10,6 +10,10 @@ _file:
 DSH Sidebar brings DeepSeek Harness conversations, tool calls, approvals and task status into VS Code. The current **Windows preview candidate is 0.1.171**, targeting exactly **DeepSeek Harness 0.2.1-rc.4**.
 
 Detailed documentation is maintained in [Chinese](README.md). See [installation](docs/INSTALL_WINDOWS.md), [troubleshooting](docs/TROUBLESHOOTING.md) and [validation scope](docs/PREVIEW_STATUS.md).
+
+See the [illustrated feature guide (Chinese)](docs/FEATURES.md) for real Windows screenshots covering conversations, mode and permission controls, image attachments and copy formats.
+
+![A real sidebar conversation with a table, a formula and Python code](docs/images/conversation.jpg)
 
 This is an independently maintained RC4 adaptation of Lixxx1/dsh-vscode, retaining upstream MIT attribution. It is not an official DeepSeek or upstream release. Get the preview from [GitHub Releases](https://github.com/Enxulansis/dsh-sidebar/releases/tag/v0.1.171-rc4-preview.1). The extension ID remains lixxx1.dsh-sidebar for installation continuity; Marketplace builds must not be assumed to match this candidate.
 

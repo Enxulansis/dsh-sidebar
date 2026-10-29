@@ -35,6 +35,10 @@ for (const pkg of packages) {
   for (const file of files) notices += '\n--- ' + file + ' ---\n' + fs.readFileSync(path.join(pkg.root, file), 'utf8').trim() + '\n'
 }
 
+// File badges are embedded SVG data, so the module dependency scan cannot find them.
+notices += '\n============================================================\nMaterial Icon Theme 5.38.1 — embedded file-type icons\nSource: https://github.com/material-extensions/vscode-material-icon-theme\nLicense: MIT\n'
+notices += fs.readFileSync('licenses/Material-Icon-Theme-MIT.txt', 'utf8').trim() + '\n'
+
 // Read the copyright/license name records from the WOFF counterparts of
 // KaTeX's embedded WOFF2 fonts. Do not rewrite the fonts themselves.
 const fontNotices = new Set()

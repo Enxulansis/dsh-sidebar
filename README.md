@@ -1,7 +1,7 @@
 ---
 _file:
   created: "2026-10-29 15:08"
-  updated: "2026-10-29 15:47"
+  updated: "2026-10-29 17:58"
   status: final
 ---
 
@@ -15,8 +15,30 @@ DSH Sidebar 把 DeepSeek Harness 的对话、工具调用、审批和任务状�
 
 [预发布安装包](https://github.com/Enxulansis/dsh-sidebar/releases/tag/v0.1.171-rc4-preview.1) · [问题反馈](https://github.com/Enxulansis/dsh-sidebar/issues) · [来源与许可](docs/ORIGIN.md)
 
+## 特色一览
+
+![DSH Sidebar 实际对话：表格、数学公式、代码块与用量信息](docs/images/conversation.jpg)
+
+在 VS Code 内阅读和处理项目任务：回答中的表格、公式与代码保留各自的排版；需要时使用对应复制入口，把结果继续用于编辑和写作。
+
+| 功能 | 日常能解决什么问题 |
+| --- | --- |
+| 文件、图片与草稿 | 带着选区或截图提问，保留未发送内容 |
+| 模式与三档权限 | 先规划再动手，按任务确认执行范围 |
+| 消息队列与后台任务 | 运行中补充要求、编辑待处理消息，并检查任务状态 |
+| 表格与公式复制 | 按目标用途选择 TSV／CSV、TeX／MathML 或 SVG／PNG |
+| 搜索、轮次导航与标注 | 在长对话里找回结论和关键决定 |
+| 阅读与通知设置 | 调整折叠、内容宽度、附件上限及提醒方式 |
+
+![普通和计划模式与三档执行权限分开显示](docs/images/modes-permissions.jpg)
+
+普通／计划决定工作方式；仅可查看、工作区内修改、完全权限决定后端提供的执行权限。详见下文说明。
+
+**[打开完整特色功能图解 →](docs/FEATURES.md)**，查看 12 张真实截图、文件格式徽标、公式／表格／代码复制反馈，以及提问停点和金色收藏的区别。图标来源见[许可说明](docs/ICON_ATTRIBUTION.md)。
+
 ## 文档导航
 
+- [特色功能图解：真实截图与使用场景](docs/FEATURES.md)
 - [安装、升级与回退](docs/INSTALL_WINDOWS.md)
 - [故障排查与反馈](docs/TROUBLESHOOTING.md)
 - [验证范围和已知限制](docs/PREVIEW_STATUS.md)
