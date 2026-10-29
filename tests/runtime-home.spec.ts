@@ -13,7 +13,9 @@ vi.mock('vscode', () => ({
   workspace: {
     workspaceFolders: [{ uri: { fsPath: process.cwd() } }],
     getWorkspaceFolder: () => undefined,
-    getConfiguration: () => ({ get: (_key: string, fallback: unknown) => fallback, inspect: () => undefined }),
+    // spawn is mocked: use a known native executable so PATH-installed DSH
+    // and Windows shell fallback cannot change this home-isolation fixture.
+    getConfiguration: () => ({ get: (key: string, fallback: unknown) => key === 'executable' ? process.execPath : fallback, inspect: () => undefined }),
   },
   window: { showQuickPick: mocks.pick, withProgress: (_options: unknown, action: Function) => action({}, { onCancellationRequested: () => ({ dispose() {} }) }) },
   ProgressLocation: { Notification: 1 },
