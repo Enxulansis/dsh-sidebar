@@ -1,0 +1,939 @@
+{
+  "name": "dsh-sidebar",
+  "displayName": "DSH Sidebar",
+  "description": "A project-aware VS Code chat sidebar powered by the official DeepSeek Harness runtime.",
+  "galleryBanner": {
+    "color": "#4d6bfe",
+    "theme": "dark"
+  },
+  "icon": "media/deepseek.png",
+  "version": "0.1.171",
+  "private": true,
+  "publisher": "lixxx1",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Enxulansis/dsh-sidebar.git"
+  },
+  "homepage": "https://github.com/Enxulansis/dsh-sidebar#readme",
+  "bugs": {
+    "url": "https://github.com/Enxulansis/dsh-sidebar/issues"
+  },
+  "type": "commonjs",
+  "packageManager": "pnpm@11.7.0",
+  "engines": {
+    "vscode": "^1.100.0",
+    "node": "^22.19.0 || >=24.0.0"
+  },
+  "categories": [
+    "AI",
+    "Other"
+  ],
+  "keywords": [
+    "deepseek",
+    "deepseek-harness",
+    "dsh",
+    "cordis",
+    "coding-agent",
+    "ai",
+    "agent",
+    "sidebar",
+    "chat"
+  ],
+  "extensionKind": [
+    "workspace"
+  ],
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onView:deepseekHarness.chat",
+    "onCommand:deepseekHarness.openInEditor",
+    "onCommand:deepseekHarness.addSelection",
+    "onCommand:deepseekHarness.fixWithDeepSeek",
+    "onCommand:deepseekHarness.sendProblem",
+    "onCommand:deepseekHarness.restart",
+    "onCommand:deepseekHarness.managePlugins",
+    "onCommand:deepseekHarness.configureApiKey",
+    "onCommand:deepseekHarness.clearApiKey",
+    "onCommand:deepseekHarness.openChat"
+  ],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": false,
+      "description": "DeepSeek Harness can run tools and edit files in the current workspace."
+    }
+  },
+  "contributes": {
+    "viewsContainers": {
+      "secondarySidebar": [
+        {
+          "id": "deepseekHarness",
+          "title": "DeepSeek Harness",
+          "icon": "media/deepseek.svg"
+        }
+      ]
+    },
+    "views": {
+      "deepseekHarness": [
+        {
+          "id": "deepseekHarness.chat",
+          "name": "聊天",
+          "type": "webview"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "deepseekHarness.openChat",
+        "title": "DeepSeek Harness: 打开聊天",
+        "icon": "media/deepseek-color.svg"
+      },
+      {
+        "command": "deepseekHarness.openInEditor",
+        "title": "DeepSeek Harness: 在编辑器中打开聊天",
+        "icon": "$(open-preview)"
+      },
+      {
+        "command": "deepseekHarness.restart",
+        "title": "DeepSeek Harness: 重连 / 重启运行时",
+        "icon": "$(debug-restart)"
+      },
+      {
+        "command": "deepseekHarness.managePlugins",
+        "title": "DeepSeek Harness: 管理运行时插件",
+        "icon": "$(extensions)"
+      },
+      {
+        "command": "deepseekHarness.addSelection",
+        "title": "DeepSeek Harness: 把选区加到聊天"
+      },
+      {
+        "command": "deepseekHarness.fixWithDeepSeek",
+        "title": "DeepSeek Harness: 让 DeepSeek 修复"
+      },
+      {
+        "command": "deepseekHarness.sendProblem",
+        "title": "DeepSeek Harness: 把问题发给 DeepSeek"
+      },
+      {
+        "command": "deepseekHarness.showOutput",
+        "title": "DeepSeek Harness: 显示运行时输出"
+      },
+      {
+        "command": "deepseekHarness.openInBrowser",
+        "title": "DeepSeek Harness: 在浏览器中打开"
+      },
+      {
+        "command": "deepseekHarness.openWebUi",
+        "title": "DeepSeek Harness: 在编辑器中打开 Web UI",
+        "icon": "$(browser)"
+      },
+      {
+        "command": "deepseekHarness.configureApiKey",
+        "title": "DeepSeek Harness: 模型与连接",
+        "icon": "$(key)"
+      },
+      {
+        "command": "deepseekHarness.clearApiKey",
+        "title": "DeepSeek Harness: 清除 VS Code 中的旧 DeepSeek 密钥"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "deepseekHarness.undoInView",
+        "key": "ctrl+z",
+        "when": "focusedView == deepseekHarness.chat"
+      },
+      {
+        "command": "deepseekHarness.redoInView",
+        "key": "ctrl+shift+z",
+        "when": "focusedView == deepseekHarness.chat"
+      },
+      {
+        "command": "deepseekHarness.redoInView",
+        "key": "ctrl+y",
+        "when": "focusedView == deepseekHarness.chat"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "deepseekHarness.addSelection",
+          "when": "editorHasSelection && resourceScheme == file",
+          "group": "navigation@100"
+        },
+        {
+          "command": "deepseekHarness.fixWithDeepSeek",
+          "when": "resourceScheme == file",
+          "group": "navigation@101"
+        }
+      ],
+      "problems/context": [
+        {
+          "command": "deepseekHarness.sendProblem",
+          "group": "navigation@100"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "deepseekHarness.openInEditor",
+          "when": "view == deepseekHarness.chat",
+          "group": "navigation@1"
+        },
+        {
+          "command": "deepseekHarness.restart",
+          "when": "view == deepseekHarness.chat",
+          "group": "navigation@2"
+        },
+        {
+          "command": "deepseekHarness.managePlugins",
+          "when": "view == deepseekHarness.chat",
+          "group": "navigation@3"
+        },
+        {
+          "command": "deepseekHarness.configureApiKey",
+          "when": "view == deepseekHarness.chat",
+          "group": "navigation@4"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "deepseekHarness.openChat",
+          "when": "!inNotebookEditor",
+          "group": "navigation@1",
+          "icon": "media/deepseek-color.svg"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "DeepSeek Harness",
+      "properties": {
+        "deepseekHarness.home": {
+          "type": "string",
+          "scope": "machine",
+          "default": "",
+          "markdownDescription": "DSH data directory for this VS Code window. Leave empty to use `DSH_HOME` or `~/.dsh`. Reload the window after changing this setting. A custom directory disables reuse of an unrelated runtime."
+        },
+        "deepseekHarness.executable": {
+          "type": "string",
+          "scope": "resource",
+          "default": "",
+          "markdownDescription": "DSH executable. Leave empty to use a source checkout when nested inside deepseek-harness, otherwise `dsh` from PATH."
+        },
+        "deepseekHarness.arguments": {
+          "type": "array",
+          "scope": "resource",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "web",
+            "--host",
+            "127.0.0.1",
+            "--port",
+            "0"
+          ],
+          "markdownDescription": "Arguments passed to DSH. The default starts the official Cordis Web profile on an OS-assigned loopback port."
+        },
+        "deepseekHarness.autoStart": {
+          "type": "boolean",
+          "default": true,
+          "description": "Start DSH when the sidebar first opens."
+        },
+        "deepseekHarness.reuseExistingRuntime": {
+          "type": "boolean",
+          "scope": "resource",
+          "default": true,
+          "description": "Reuse a healthy official DSH Web runtime on 127.0.0.1:3080 when no custom executable or arguments are configured."
+        },
+        "deepseekHarness.autonomousDebugging": {
+          "type": "boolean",
+          "scope": "resource",
+          "default": false,
+          "markdownDescription": "Expose the current workspace's native VS Code debugger to DSH as autonomous tools. When enabled, the extension starts a managed DSH runtime instead of reusing an external runtime."
+        },
+        "deepseekHarness.animationStyle": {
+          "type": "string",
+          "enum": [
+            "standard",
+            "dots",
+            "off"
+          ],
+          "scope": "window",
+          "default": "standard",
+          "markdownDescription": "Runtime motion style in the chat view. `standard`: breathing pulse + shimmer + spinner; `dots`: bouncing dots; `off`: all animations off (same as reduced motion)."
+        },
+        "deepseekHarness.preview.minScale": {
+          "type": "number",
+          "scope": "window",
+          "default": 0.01,
+          "markdownDescription": "图片预览的最小缩放倍数（0.005–1）。滚轮缩小到此界限为止。"
+        },
+        "deepseekHarness.preview.maxScale": {
+          "type": "number",
+          "scope": "window",
+          "default": 32,
+          "markdownDescription": "图片预览的最大缩放倍数（1–64）。滚轮放大到此界限为止。"
+        },
+        "deepseekHarness.preview.gifAutoplay": {
+          "type": "boolean",
+          "scope": "window",
+          "default": true,
+          "markdownDescription": "打开动图（GIF / APNG / 动图 WebP）预览时默认播放动画；关闭则定格首帧（可用预览控制条手动播放/翻帧）。"
+        },
+        "deepseekHarness.preview.maxFrames": {
+          "type": "number",
+          "scope": "window",
+          "default": 60,
+          "minimum": 1,
+          "maximum": 240,
+          "markdownDescription": "G38（0.0.96）: 动图选帧器一次最多抽取的帧数（帧数超出时按步长抽稀显示；1–240）。"
+        },
+        "deepseekHarness.preview.maxFrameSelections": {
+          "type": "number",
+          "scope": "window",
+          "default": 12,
+          "minimum": 1,
+          "maximum": 60,
+          "markdownDescription": "G38（0.0.96）: 动图「选帧发送」最多可选帧数（1–60）。扩展侧草稿净化与界面拦截同值。"
+        },
+        "deepseekHarness.attach.maxFiles": {
+          "type": "number",
+          "scope": "window",
+          "default": 20,
+          "minimum": 1,
+          "maximum": 200,
+          "markdownDescription": "G38（0.0.96）: 一次拖入/粘贴最多接收的文件数（超出部分跳过并在草稿栏提示；1–200）。"
+        },
+        "deepseekHarness.attach.maxTotalMB": {
+          "type": "number",
+          "scope": "window",
+          "default": 100,
+          "minimum": 1,
+          "maximum": 2048,
+          "markdownDescription": "G38（0.0.96）: 一次拖入/粘贴的累计大小上限（MB）。单文件上限（attach.maxFileMB）独立生效并优先。"
+        },
+        "deepseekHarness.attach.maxFileMB": {
+          "type": "number",
+          "scope": "window",
+          "default": 25,
+          "minimum": 1,
+          "maximum": 500,
+          "markdownDescription": "0.0.175（B5 文案群）: 拖入/粘贴的**单文件**大小上限（MB）。此前写死 25MB。超过此值且是图片时仍会先尝试压缩（attach.compressThresholdMB）；非图片文件直接跳过并列在提示条。"
+        },
+        "deepseekHarness.attach.compressThresholdMB": {
+          "type": "number",
+          "scope": "window",
+          "default": 20,
+          "minimum": 0,
+          "maximum": 2048,
+          "markdownDescription": "0.0.145（G43）: 大图自动压缩阈值（MB）——超过则先下采样 + 白底 JPEG 重编码再入列；**0 = 关闭压缩**（回到超限跳过）。（0.0.162 修复：此前只写不读，改动不生效）"
+        },
+        "deepseekHarness.attach.compressMaxEdge": {
+          "type": "number",
+          "scope": "window",
+          "default": 4096,
+          "minimum": 512,
+          "maximum": 16384,
+          "markdownDescription": "0.0.145（G43）: 压缩后最长边（px，512–16384，步进 256）。（0.0.162 修复：此前只写不读）"
+        },
+        "deepseekHarness.attach.compressQuality": {
+          "type": "number",
+          "scope": "window",
+          "default": 82,
+          "minimum": 40,
+          "maximum": 95,
+          "markdownDescription": "0.0.145（G43）: 重编码 JPEG 质量（40–95）。（0.0.162 修复：此前只写不读）"
+        },
+        "deepseekHarness.sessionHistory.loadAll": {
+          "type": "boolean",
+          "scope": "window",
+          "default": true,
+          "markdownDescription": "0.0.154（O3）: 打开/切回会话时一次性拉取整段历史（本地实测 2000+ 事件 <0.5s）。关 = 回到逐页加载。"
+        },
+        "deepseekHarness.sessionHistory.maxMessages": {
+          "type": "number",
+          "scope": "window",
+          "default": 3000,
+          "minimum": 500,
+          "maximum": 20000,
+          "markdownDescription": "0.0.154（O3）: 全量加载上限（消息条数，500–20000，步进 500）；超限自动退回分页（「加载更早消息」按钮/上滚预取照常）。"
+        },
+        "deepseekHarness.updateCheckFrequency": {
+          "type": "string",
+          "enum": [
+            "startup",
+            "reload",
+            "weekly",
+            "never"
+          ],
+          "scope": "window",
+          "default": "startup",
+          "markdownDescription": "自动检查 DSH/插件更新的时机。`startup`: 每天首次打开侧栏时检查一次（同日 Reload 不重复）; `reload`: 每次窗口重载/激活都检查; `weekly`: 距上次检查满 7 天时检查; `never`: 不自动检查（「更新检查」区的「立即检查」仍可用）。"
+        },
+        "deepseekHarness.timeContext.refreshSeconds": {
+          "type": "number",
+          "scope": "window",
+          "default": 60,
+          "minimum": 0,
+          "maximum": 86400,
+          "markdownDescription": "0.0.88: 时间上下文采样间隔（秒）。`0`: 每一步都注入当前时间（更精确，token 略增）；`60`: 每分钟最多一次（默认）；数值越大注入越少。改动会写入 dsh web profile 配置（time-context 行的 refreshIntervalMs），重启运行时后确保生效。"
+        },
+        "deepseekHarness.sessionSortMode": {
+          "type": "string",
+          "enum": [
+            "persisted",
+            "activity"
+          ],
+          "scope": "window",
+          "default": "persisted",
+          "markdownDescription": "G5 v9: 会话标签排序 — `persisted`: 按本地持久化顺序（拖拽自定义 / 新建恢复插当前右侧，reload 与重启 VS Code 均不变）；`activity`: 回退服务端“最后活动时间”顺序（现状行为，设置台入口后续入 G6）。"
+        },
+        "deepseekHarness.sessionViewMemory.scroll": {
+          "type": "boolean",
+          "scope": "window",
+          "default": true,
+          "markdownDescription": "G39（0.0.93）: 切换会话时记忆**滚动位置**——切走再切回停在离开时的位置（贴底离开则回到底部、含新消息）；关闭 = 每次切回在底部。Reload/重开侧栏后同样恢复。"
+        },
+        "deepseekHarness.sessionViewMemory.expand": {
+          "type": "boolean",
+          "scope": "window",
+          "default": true,
+          "markdownDescription": "G39（0.0.93）: 切换会话时记忆**工具/思考卡的展开态**——切走再切回仍展开；关闭 = 切回后恢复默认折叠。"
+        },
+        "deepseekHarness.sessionViewMemory.fold": {
+          "type": "boolean",
+          "scope": "window",
+          "default": true,
+          "markdownDescription": "G39（0.0.93）: 切换会话时记忆**长用户消息的手动展开/收起**（不被自动折叠规则重判覆盖）；关闭 = 切回后按自动规则折叠。"
+        },
+        "deepseekHarness.markdownImages": {
+          "type": "boolean",
+          "scope": "window",
+          "default": false,
+          "markdownDescription": "G15: render absolute http(s) images inside assistant Markdown (same policy as the DSH web UI: `referrerpolicy=no-referrer`). Disabled by default on privacy grounds; local paths, `file:` URLs and data: images stay as alt text."
+        },
+        "deepseekHarness.startupTimeout": {
+          "type": "number",
+          "scope": "resource",
+          "default": 60000,
+          "minimum": 1000,
+          "maximum": 300000,
+          "description": "Milliseconds to wait for DSH to report its local Web URL."
+        },
+        "deepseekHarness.recycleRetentionDays": {
+          "type": "number",
+          "scope": "window",
+          "default": 30,
+          "minimum": -1,
+          "maximum": 365,
+          "markdownDescription": "回收站会话自动永久删除前的保留天数（1–365）。**-1 = 永不删除**（刻意设置的特殊值，面板会红字提醒）；0 与其他负值按 1 处理。"
+        },
+        "deepseekHarness.fileCardRetentionDays": {
+          "type": "number",
+          "scope": "window",
+          "default": 30,
+          "minimum": -1,
+          "maximum": 365,
+          "markdownDescription": "消息文件卡的「粘贴副本」在删除前的保留天数（1–365，工作区引用不受影响）。**-1 = 永不删除**（刻意设置的特殊值，面板会红字提醒）；0 与其他负值按 1 处理。"
+        },
+        "deepseekHarness.imageStore.maxTotalMB": {
+          "type": "number",
+          "scope": "window",
+          "default": 512,
+          "minimum": -1,
+          "maximum": 4096,
+          "markdownDescription": "G38 批次 3（0.0.97）: 发送原图留档的磁盘总量上限（MB，16–4096）——超出时最旧原图优先清理（显示/复制自动回落到归一化副本，功能不受影响）。**-1 = 不剪枝**（原图只增不减，刻意设置的特殊值，面板会红字提醒）。"
+        },
+        "deepseekHarness.imageCopyFormat": {
+          "type": "string",
+          "enum": [
+            "original",
+            "png"
+          ],
+          "scope": "window",
+          "default": "original",
+          "markdownDescription": "G6: 图片右键菜单的复制档次序——`original`: 「复制原格式」在前（原字节；转码源保留原格式）；`png`: 「复制 PNG」在前（解码位图）。两档均保留。"
+        },
+        "deepseekHarness.copy.mathButtons": {
+          "type": "boolean",
+          "scope": "window",
+          "default": true,
+          "markdownDescription": "G6: 公式旁显示复制按钮（$…$ / $$…$$）。"
+        },
+        "deepseekHarness.copy.blockButtons": {
+          "type": "boolean",
+          "scope": "window",
+          "default": true,
+          "markdownDescription": "G6: 段落/标题/列表/引用/代码块等显示悬浮复制按钮。"
+        },
+        "deepseekHarness.copy.mathFormat": {
+          "type": "string",
+          "enum": [
+            "markdown",
+            "tex"
+          ],
+          "scope": "window",
+          "default": "markdown",
+          "markdownDescription": "G6: 公式复制按钮的输出格式——`markdown`: 分别包 `$` / `$$` 定界符（粘回 Markdown 可渲染）；`tex`: 纯 TeX 源。"
+        },
+        "deepseekHarness.copy.plainMathFormat": {
+          "type": "string",
+          "enum": [
+            "tex",
+            "tex-delimited"
+          ],
+          "scope": "window",
+          "default": "tex",
+          "markdownDescription": "G6: 纯文本复制（块按钮 text 档 + 右键「复制纯文本」）中公式的输出形式——`tex`: 无定界符 TeX 源；`tex-delimited`: 按 inline/display 分别包 `$` / `$$`。"
+        },
+        "deepseekHarness.copy.codeCopyFormat": {
+          "type": "string",
+          "enum": [
+            "text",
+            "markdown"
+          ],
+          "scope": "window",
+          "default": "text",
+          "markdownDescription": "G6: 代码块复制按钮的输出——`text`: 纯文本（不带围栏）；`markdown`: 含围栏的整段。"
+        },
+        "deepseekHarness.copy.feedbackMs": {
+          "type": "number",
+          "scope": "window",
+          "default": 1000,
+          "minimum": 200,
+          "maximum": 6000,
+          "deprecationMessage": "已由 copy.feedbackSeconds（秒）替代；该键仅在未设置新键时作为回退沿用一次。",
+          "markdownDescription": "G6: 复制成功的反馈时长（毫秒）。**已弃用**：请改用 `deepseekHarness.copy.feedbackSeconds`（秒）。"
+        },
+        "deepseekHarness.copy.feedbackSeconds": {
+          "type": "number",
+          "scope": "window",
+          "default": 1,
+          "minimum": 0.2,
+          "maximum": 6,
+          "markdownDescription": "G42（0.0.97）: 复制成功的反馈时长（**秒**，0.2–6，步进 0.1）。旧 `copy.feedbackMs` 未迁移时自动按旧值换算沿用。"
+        },
+        "deepseekHarness.turnRail.granularity": {
+          "type": "string",
+          "enum": [
+            "segment",
+            "turn"
+          ],
+          "scope": "window",
+          "default": "segment",
+          "markdownDescription": "0.0.125: 轮次导航条的「轮」——`segment`=**工作段**（默认；与「工作过程折叠」同源：你的每次输入 + 已应答的审批/提问，跳转必落在段首，不会跳进折起的过程里）；`turn`=智能体回合（官方轮次大纲，含尚未加载的轮，可逐回合跳转）。"
+        },
+        "deepseekHarness.turnRail.jumpSeconds": {
+          "type": "number",
+          "scope": "window",
+          "default": 0.25,
+          "minimum": 0,
+          "maximum": 1.5,
+          "markdownDescription": "G41 v1.2（0.0.101）: 点击轮次导航节时的跳转动画时长（**秒**，0–1.5，步进 0.05）；**0 = 瞬时跳转**（不带动画）。"
+        },
+        "deepseekHarness.turnRail.scrollbar": {
+          "type": "string",
+          "enum": [
+            "custom",
+            "native"
+          ],
+          "scope": "window",
+          "default": "custom",
+          "markdownDescription": "0.0.128: 侧栏滚动条方式（两者互斥显示）——`custom`=**自绘**（节点轨道 + 可拖滑块，隐藏原生滚动条；滑块位置与节点联动，拖滑块=连续滚动，滚轮移到滑块上=上下浏览节点）；`native`=**原生**（只保留系统滚动条，整套节点轨道隐藏）。"
+        },
+        "deepseekHarness.turnRail.minGap": {
+          "type": "number",
+          "scope": "window",
+          "default": 20,
+          "minimum": 12,
+          "maximum": 96,
+          "markdownDescription": "0.0.128: 轨道上相邻节点的**最小间距**（px，12–96，步进 1）——轮数多时的密度控制：调大 → 轨道变长、节点更疏（需要更多上下滚动）；调小 → 更紧凑。（0.0.162 修正：文案此前停留在 12–48）"
+        },
+        "deepseekHarness.turnRail.dragEdgePx": {
+          "type": "number",
+          "scope": "window",
+          "default": 64,
+          "minimum": 8,
+          "maximum": 200,
+          "markdownDescription": "0.0.144: 边缘拖拽自动滚列的触发带宽（px，8–200，步进 4）——拖到轨道上下缘多少像素内开始自动滚列。仅作用于拖拽，不影响滚轮滚列。"
+        },
+        "deepseekHarness.turnRail.dragSpeed": {
+          "type": "number",
+          "scope": "window",
+          "default": 800,
+          "minimum": 100,
+          "maximum": 3000,
+          "markdownDescription": "0.0.144: 边缘拖拽自动滚列的最大速度（px/秒，100–3000，步进 50）。"
+        },
+        "deepseekHarness.turnRail.markStops": {
+          "type": "boolean",
+          "scope": "window",
+          "default": true,
+          "markdownDescription": "0.0.148（G53）: 含提问/审批停点（工作段边界）的应答段节点显示紫色圆角菱形（自动标注）。"
+        },
+        "deepseekHarness.turnRail.markNoteOnly": {
+          "type": "boolean",
+          "scope": "window",
+          "default": true,
+          "markdownDescription": "0.0.149: 悬停被标注的节点时的提示样式——true = 只显示标注内容；false = 标注 + 「N/M · 摘要」。"
+        },
+        "deepseekHarness.turnRail.nodeBadge": {
+          "type": "boolean",
+          "scope": "window",
+          "default": true,
+          "markdownDescription": "0.1.114（G55 轨道序号）: 滚动静息徽标——滚动内容 / 拖动滑块 / 滚动节点列时，在轨道旁浮出「N/M」（当前节点序号 / 可见节点总数），空闲 1 秒淡出；关 = 不显示。"
+        },
+        "deepseekHarness.turnRail.summaryLength": {
+          "type": "number",
+          "scope": "window",
+          "default": 40,
+          "minimum": 24,
+          "maximum": 80,
+          "markdownDescription": "0.1.122（G55）: 节点摘要长度——节点悬停提示里保留的文字量（24–80 字，默认 40）。"
+        },
+        "deepseekHarness.turnRail.numberStyle": {
+          "type": "string",
+          "enum": [
+            "compact",
+            "full",
+            "legacy"
+          ],
+          "scope": "window",
+          "default": "compact",
+          "markdownDescription": "0.1.122（G55）: 编号文案档位——`compact`=「N/M」（默认）/ `full`=「第 N/M 个节点」/ `legacy`=「第 N 轮」。联动：节点提示前缀、搜索行编号片、浮出徽标。"
+        },
+        "deepseekHarness.turnRail.scrollAnimSeconds": {
+          "type": "number",
+          "scope": "window",
+          "default": 0.18,
+          "minimum": 0,
+          "maximum": 0.6,
+          "markdownDescription": "0.1.122（G55）: 节点列滚动动画时长（秒，0–0.6，步进 0.05）——滚轮滚节点列与高亮自动跟随的平滑收敛时长；**0 = 瞬时**（关动画）。"
+        },
+        "deepseekHarness.turnRail.tipTwoLine": {
+          "type": "boolean",
+          "scope": "window",
+          "default": false,
+          "markdownDescription": "0.1.122（G55）: 节点提示两行显示——默认单行+省略号；开启后超长摘要折成两行（配合「节点摘要长度」更有意义）。"
+        },
+        "deepseekHarness.turnRail.markColor": {
+          "type": "string",
+          "scope": "window",
+          "default": "theme",
+          "markdownDescription": "0.0.151: 收藏节点填充色——\"theme\"（跟随主题黄）或 #rrggbb。"
+        },
+        "deepseekHarness.turnRail.stopColor": {
+          "type": "string",
+          "scope": "window",
+          "default": "theme",
+          "markdownDescription": "0.0.151: 停点节点填充色——\"theme\"（跟随主题紫）或 #rrggbb。"
+        },
+        "deepseekHarness.copy.mathSvgColor": {
+          "type": "string",
+          "scope": "window",
+          "default": "theme",
+          "markdownDescription": "G45（0.0.103）: 「复制为 SVG」的输出颜色——`theme` = 跟随主题前景色；或自定义 `#rrggbb`（设置台「复制」区提供色板 + RGB/HSL/Hex 输入）。仅 SVG 生效（MathML 为公式标记，无颜色）。"
+        },
+        "deepseekHarness.copy.svgPngEdge": {
+          "type": "string",
+          "scope": "window",
+          "enum": [
+            "screen",
+            "512",
+            "1024",
+            "2048"
+          ],
+          "default": "1024",
+          "markdownDescription": "G45 v1.2（0.0.105）: 公式位图（「复制为 PNG」/「复制为 SVG」的 PNG 兜底）分辨率档位——最长边目标（倍率护栏 2–8×）；`screen` = 跟随屏显（固定 4×）。"
+        },
+        "deepseekHarness.fold.enabled": {
+          "type": "boolean",
+          "scope": "window",
+          "default": true,
+          "markdownDescription": "G6: 长用户消息自动折叠压缩（G29）。"
+        },
+        "deepseekHarness.fold.previewLines": {
+          "type": "number",
+          "scope": "window",
+          "default": 4,
+          "minimum": 1,
+          "maximum": 20,
+          "markdownDescription": "G6: 折叠状态下预览的行数。"
+        },
+        "deepseekHarness.fold.triggerRatio": {
+          "type": "number",
+          "scope": "window",
+          "default": 0.5,
+          "minimum": 0.1,
+          "maximum": 3,
+          "markdownDescription": "G6: 折叠触发阈值。**实际阈值 = max(视口高度 × 该比例, 行高 × (预览行数 + 保底折叠行数))**——「保底折叠行数」优先，调低比例不会低于保底项；另受「豁免字符门槛」硬性约束（短于门槛的消息不参与折叠判定）。"
+        },
+        "deepseekHarness.fold.minFoldExtraLines": {
+          "type": "number",
+          "scope": "window",
+          "default": 3,
+          "minimum": 0,
+          "maximum": 50,
+          "markdownDescription": "G6: 保底折叠量（至少超出预览行数这么多行才折叠，防小视口折了等于没折）。与「预览行数」相加构成**实际阈值下限，优先于「触发阈值」**——触发比例调到再低也不会低于它。"
+        },
+        "deepseekHarness.fold.minChars": {
+          "type": "number",
+          "scope": "window",
+          "default": 100,
+          "minimum": 0,
+          "maximum": 20000,
+          "markdownDescription": "G6: 豁免字符门槛——短于此字符数的用户消息**完全不参与折叠判定**（优先级最高的硬性门槛）；带附件的消息免此门槛。"
+        },
+        "deepseekHarness.fold.blockMinLines": {
+          "type": "number",
+          "scope": "window",
+          "default": 3,
+          "minimum": 1,
+          "maximum": 50,
+          "markdownDescription": "G38（0.0.96）: AI 输出「超高块」折叠门槛——代码块/引用/表格超过这么多行才显示悬浮「折叠」按钮（此前固定 3 行）。"
+        },
+        "deepseekHarness.fold.changedFiles": {
+          "type": "boolean",
+          "scope": "window",
+          "default": true,
+          "markdownDescription": "0.0.108（用户补充①）: 会话尾部「变更文件」块过长自动折叠——超过阈值行数时先显示前几行，其余隐藏（可一键展开）。"
+        },
+        "deepseekHarness.fold.changedFilesLines": {
+          "type": "number",
+          "scope": "window",
+          "default": 6,
+          "minimum": 1,
+          "maximum": 50,
+          "markdownDescription": "0.0.108（用户补充①）: 变更文件块折叠阈值行数——超过这么多行才折叠；折叠时保留显示的行数，也是「展开其余 N 个文件」的基准。"
+        },
+        "deepseekHarness.fold.workSegments": {
+          "type": "boolean",
+          "scope": "window",
+          "default": true,
+          "markdownDescription": "0.0.119（G49）: AI 工作段（过程）自动折叠——AI 停下要你输入时，把两次输入之间的过程（工具卡/命令卡/中间叙述）收成段首一条「已收起 N 步过程」；你的消息、最终回答、提问/审批卡保持可见；运行中不折。"
+        },
+        "deepseekHarness.ui.showOriginalOnHover": {
+          "type": "boolean",
+          "scope": "window",
+          "default": false,
+          "markdownDescription": "0.0.109（G50）: 悬停界面文案时显示**官方英文原文**（tooltip）——映射来自官方 dsh 双语字典（`scripts/gen-original-text-map.mjs` 生成，官方更新后可重跑再生成）；仅覆盖官方翻译过的文案，自研文案无原文不受影响。"
+        },
+        "deepseekHarness.ui.hintSeconds": {
+          "type": "number",
+          "scope": "window",
+          "default": 4,
+          "minimum": 1,
+          "maximum": 60,
+          "markdownDescription": "0.0.145: 临时提示条（黄色：拖入跳过/压缩结果/超限等）的显示时长（秒，1–60）。（0.0.162 修复：此前只写不读，改动不生效）"
+        },
+        "deepseekHarness.ui.contentMaxWidth": {
+          "type": "number",
+          "scope": "window",
+          "default": 760,
+          "markdownDescription": "内容列（正文 + 草稿栏 + 排队区）最大宽度（px）。超过后内容居中不再变宽；**-1 = 无上限**（宽侧栏时铺满）。"
+        },
+        "deepseekHarness.ui.lazyFoldedBodies": {
+          "type": "boolean",
+          "scope": "window",
+          "default": true,
+          "markdownDescription": "0.1.44：折叠内容按需构建——默认折叠的\"过程\"内容不随装载一起构建（台架实测首屏构建 −75%、DOM 节点 −19%），展开该段/搜索结果跳转时即时补建（约 1ms）。默认开；关闭后恢复一次性全量构建（切换会重建会话 DOM）。"
+        },
+        "deepseekHarness.ui.hoverActions": {
+          "type": "boolean",
+          "scope": "window",
+          "default": true,
+          "markdownDescription": "0.1.45：动作行悬停显示——消息尾部的\"复制 / 时钟 / 更多\"按钮改为悬停该消息时浮出（时间仍常显）。台架实测（2261 消息会话）：装载期构建节点 −29%、reconcile −53%、稳定节点 −11%，浮出 0.7ms 且不挤动布局。默认开；关闭后恢复常显整行（切换会重建会话 DOM）。"
+        },
+        "deepseekHarness.ui.sessionTabMinWidth": {
+          "type": "number",
+          "scope": "window",
+          "default": 112,
+          "minimum": 68,
+          "maximum": 200,
+          "markdownDescription": "0.0.147: 顶部会话标签最小宽度（px，68–200，步进 4）。（0.0.162 修复：此前只写不读）"
+        },
+        "deepseekHarness.ui.notifyLevel": {
+          "type": "string",
+          "scope": "window",
+          "default": "all",
+          "enum": [
+            "all",
+            "action",
+            "off"
+          ],
+          "enumDescriptions": [
+            "需要操作 + 跑完",
+            "仅需要操作",
+            "关闭"
+          ],
+          "markdownDescription": "0.0.160（N1）: 任务通知等级——侧栏不在视野时用系统通知提醒（审批/提问/回合跑完）。"
+        },
+        "deepseekHarness.ui.notifyStyle": {
+          "type": "string",
+          "scope": "window",
+          "default": "vscode",
+          "enum": [
+            "vscode",
+            "system"
+          ],
+          "enumDescriptions": [
+            "跟随 VS Code",
+            "总是系统弹窗"
+          ],
+          "markdownDescription": "0.1.7: 通知形式——「总是系统弹窗」= VS Code 在前台但侧栏不在视野时，改用 Windows 右下角弹窗（点击弹窗回到侧栏）；VS Code 在后台时两档一致，不会弹两份。"
+        },
+        "deepseekHarness.ui.keepDrafts": {
+          "type": "boolean",
+          "scope": "window",
+          "default": true,
+          "markdownDescription": "0.0.161: 保留未发送的草稿——Reload/重启后按会话恢复 文本/图片/文件卡；成功发出即清。"
+        },
+        "deepseekHarness.search.highlightMode": {
+          "type": "string",
+          "enum": [
+            "steady",
+            "blink",
+            "blinkThenSteady"
+          ],
+          "enumDescriptions": [
+            "一直常亮（默认）",
+            "一直呼吸（底色明暗渐变，非硬闪）",
+            "呼吸几次后转常亮"
+          ],
+          "default": "steady",
+          "markdownDescription": "搜索跳转后，会话内**命中词高亮**的显示方式。自选底色时字色会按对比度自动取黑/白。"
+        },
+        "deepseekHarness.search.highlightColor": {
+          "type": "string",
+          "default": "theme",
+          "markdownDescription": "命中词高亮的颜色：`theme` = 跟随主题（默认，主题黄），或 `#rrggbb` 自选颜色。"
+        },
+        "deepseekHarness.search.highlightFg": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "fixed"
+          ],
+          "enumDescriptions": [
+            "自动对比（默认）：字色按有效底色取纯黑/纯白，底色明暗交叉点会翻一次色",
+            "固定不翻色：按底色最浓时定一次，全程不翻（淡端对比度略低）"
+          ],
+          "default": "auto",
+          "markdownDescription": "自选高亮底色时**命中词字色**的取法（「跟随主题」档不受影响）。"
+        },
+        "deepseekHarness.search.blinkPeriod": {
+          "type": "number",
+          "minimum": 0.6,
+          "maximum": 3,
+          "default": 1.2,
+          "markdownDescription": "**呼吸周期**：一个呼吸来回的时长（秒，0.6–3，默认 1.2）。「呼吸后常亮」档每条命中各自**进入视野**后呼吸 **2 个整周期**再转常亮——按整周期收尾，结束时必落在最亮处，不会突然跳到常亮。"
+        },
+        "deepseekHarness.search.resultOrder": {
+          "type": "string",
+          "enum": [
+            "recent",
+            "oldest"
+          ],
+          "enumDescriptions": [
+            "最近优先（默认）：段内按消息时间新→旧",
+            "时间正序：早→晚"
+          ],
+          "default": "recent",
+          "markdownDescription": "搜索**结果排序**：段内按时间「最近优先」或「时间正序」。三段结构（当前会话 / 本工作区 / 其他会话）不变。"
+        },
+        "deepseekHarness.search.snippetView": {
+          "type": "string",
+          "enum": [
+            "peek",
+            "pane"
+          ],
+          "enumDescriptions": [
+            "悬停覆盖层（默认）：行高恒定、预览浮在该行旁，指针移动不受影响",
+            "面板底部固定详情区：列表完全不动，底部常驻 3 行显示当前悬停/选中项的长片段"
+          ],
+          "default": "peek",
+          "markdownDescription": "搜索结果里**长片段**（悬停/选中时展示的更长上下文）的显示方式。"
+        },
+        "deepseekHarness.search.includeTools": {
+          "type": "boolean",
+          "default": false,
+          "description": "0.1.96: 搜索结果是否包含**工具卡内容**（工具调用的参数与输出，如「记录 · 工具：」行）。默认关——工具参数常与助手正文重复、长 JSON 噪声大；想搜命令/文件路径/工具输出时打开。"
+        },
+        "deepseekHarness.search.nodeChip": {
+          "type": "boolean",
+          "default": true,
+          "description": "0.1.122（G55）: 搜索结果行的**节点编号片**（行内「N/M」小片，点击=跳到该节点起点）；关 = 不显示（行更清爽，跳段首入口一并关闭）。"
+        },
+        "deepseekHarness.search.groupOrder": {
+          "type": "string",
+          "enum": [
+            "recent",
+            "panel"
+          ],
+          "enumDescriptions": [
+            "最近命中优先（默认）：其余会话按「组内最新一条命中的时间」排——刚聊过的会话先走",
+            "侧栏顺序：其余会话按会话栏（标签）里的先后顺序排——老会话先走"
+          ],
+          "default": "recent",
+          "markdownDescription": "0.1.103: Enter 逐处跳走进**下一个会话**的顺序（起点会话永远第一个）。"
+        },
+        "deepseekHarness.search.returnPill": {
+          "type": "boolean",
+          "default": true,
+          "description": "跨会话搜索跳转后显示「← 返回 搜索起点」胶囊（人回到起点会话或点 ✕ 即消失）。关掉后跨会话跳转仍然生效，只是不再弹胶囊提醒。"
+        },
+        "deepseekHarness.search.returnPillSeconds": {
+          "type": "number",
+          "minimum": 3,
+          "maximum": 120,
+          "default": 12,
+          "description": "0.1.88: 「跨会话返回胶囊」显示多少秒后自动消失（3–120，默认 12）。每次跨会话跳转重新计时；点 ✕ 可随时立即关闭。"
+        },
+        "deepseekHarness.ui.diagnostics": {
+          "type": "boolean",
+          "scope": "window",
+          "default": false,
+          "markdownDescription": "0.1.0（B6 A8）: 诊断日志——打开后把 webview 每帧的 [trace] 与调试明细写进「输出」面板（默认关）。排障时开启，平时保持关闭以免刷屏。"
+        },
+        "deepseekHarness.ui.messageContainment": {
+          "type": "boolean",
+          "scope": "window",
+          "default": true,
+          "markdownDescription": "0.1.52：消息块布局包含——每条消息各自成为独立的布局包含块（`contain: content`），相邻消息排版互不牵连。实测（2261 消息会话，冷缓存首轮）：layout 390→79ms（−80%）、打开墙钟 −32%、最长长任务 125→54ms。**不跳过渲染、不产生占位高度**：滚动高度、轨道点位与位置记忆与关闭时逐值一致。默认开；关闭后恢复逐块全量排版。"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run build",
+    "build": "tsc -p tsconfig.json --noEmit && node scripts/build.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run --config vitest.config.ts",
+    "check": "tsc -p tsconfig.json --noEmit && vitest run --config vitest.config.ts && node scripts/build.mjs",
+    "package": "vsce package --no-dependencies --no-rewrite-relative-links --pre-release --readme-path README.md --out dsh-sidebar-0.1.171-rc4-preview.vsix",
+    "notices": "node scripts/generate-notices.mjs"
+  },
+  "devDependencies": {
+    "@modelcontextprotocol/sdk": "1.30.0",
+    "@shikijs/core": "1.29.2",
+    "@shikijs/engine-javascript": "1.29.2",
+    "@shikijs/langs": "1.29.2",
+    "@shikijs/themes": "1.29.2",
+    "@types/node": "^22.20.0",
+    "@types/vscode": "^1.100.0",
+    "@types/ws": "^8.18.1",
+    "@vscode/vsce": "^3.6.0",
+    "esbuild": "^0.25.12",
+    "katex": "0.16.11",
+    "markdown-it": "14.1.0",
+    "markdown-it-task-lists": "2.1.1",
+    "mathjax": "^3.2.2",
+    "pako": "^1.0.11",
+    "shiki": "1.29.2",
+    "typescript": "^6.0.3",
+    "utif2": "^4.1.0",
+    "vitest": "^4.1.8",
+    "ws": "^8.21.3",
+    "zod": "^3.25.76"
+  }
+}
